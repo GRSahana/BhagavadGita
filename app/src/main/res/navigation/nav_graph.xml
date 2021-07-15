@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/bhagvadGitaListFragment">
+
+    <fragment
+        android:id="@+id/bhagvadGitaListFragment"
+        android:name="com.nannaapp.bhagavadgita.ui.fragment.BhagvadGitaListFragment"
+        android:label="BhagavadGita"
+        tools:layout="@layout/fragment_chapter_list">
+        <action
+            android:id="@+id/action_bhagvadGitaListFragment_to_chapterDetailsFragment"
+            app:destination="@id/chapterDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chapterDetailsFragment"
+        android:name="com.nannaapp.bhagavadgita.ui.fragment.ChapterDetailsFragment"
+        android:label="Chapter {chapter_number}"
+        tools:layout="@layout/fragment_chapter_details">
+        <argument
+            android:name="chapter_number"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_chapterDetailsFragment_to_verseDetailsFragment"
+            app:destination="@id/verseDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verseDetailsFragment"
+        android:name="com.nannaapp.bhagavadgita.ui.fragment.VerseDetailsFragment"
+        android:label="Slok {verse_number}"
+        tools:layout="@layout/fragment_verse_details">
+        <argument
+            android:name="chapter_number"
+            app:argType="integer" />
+        <argument
+            android:name="verse_number"
+            app:argType="integer" />
+    </fragment>
+</navigation>
