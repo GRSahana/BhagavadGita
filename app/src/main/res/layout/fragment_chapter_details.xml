@@ -91,7 +91,7 @@
 
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progress_circular"
+                android:id="@+id/chapter_progress_linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_element_margin"
@@ -109,7 +109,7 @@
                 android:textAlignment="center"
                 android:textSize="@dimen/sub_heading"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progress_circular"
+                app:layout_constraintTop_toBottomOf="@+id/chapter_progress_linear"
                 tools:text="Arjun Viṣhād Yog - Arjuna's Dilemma" />
 
             <TextView

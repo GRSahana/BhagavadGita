@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.nannaapp.bhagavadgita.R
+import com.nannaapp.bhagavadgita.database.ChapterDao
 import com.nannaapp.bhagavadgita.network.BhagavadgitaApi
 import com.nannaapp.bhagavadgita.repository.MainRepository
 import dagger.Module
@@ -36,10 +37,7 @@ object NetworkModule {
     fun provideBhagavadgitaApi(retrofit: Retrofit): BhagavadgitaApi =
         retrofit.create(BhagavadgitaApi::class.java)
 
-    @Provides
-    @Singleton
-    fun provideMainRepository(bhagavadgitaApi: BhagavadgitaApi): MainRepository =
-        MainRepository(bhagavadgitaApi)
+
 
     @Singleton
     @Provides

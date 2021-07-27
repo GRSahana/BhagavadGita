@@ -2,6 +2,7 @@ package com.nannaapp.bhagavadgita.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.nannaapp.bhagavadgita.model.ChapterModel
 import com.nannaapp.bhagavadgita.model.network_data.Chapter
 import com.nannaapp.bhagavadgita.repository.MainRepository
 import com.nannaapp.bhagavadgita.util.ResultOf
@@ -18,8 +19,8 @@ constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), LifecycleObserver {
 
-    private val _dataState: MutableLiveData<ResultOf<List<Chapter>>> = MutableLiveData()
-    val dataState: LiveData<ResultOf<List<Chapter>>>
+    private val _dataState: MutableLiveData<ResultOf<List<ChapterModel>>> = MutableLiveData()
+    val dataState: LiveData<ResultOf<List<ChapterModel>>>
         get() = _dataState
 
     init {

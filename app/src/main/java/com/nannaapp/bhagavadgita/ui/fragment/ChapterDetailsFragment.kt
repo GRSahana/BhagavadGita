@@ -1,7 +1,6 @@
 package com.nannaapp.bhagavadgita.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,12 +12,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.nannaapp.bhagavadgita.R
 import com.nannaapp.bhagavadgita.adapter.SlokAdapter
 import com.nannaapp.bhagavadgita.databinding.FragmentChapterDetailsBinding
-import com.nannaapp.bhagavadgita.model.cache_data.VerseInfo
+import com.nannaapp.bhagavadgita.model.ChapterModel
 import com.nannaapp.bhagavadgita.model.network_data.Chapter
 import com.nannaapp.bhagavadgita.ui.viewmodel.ChapterDetailsViewModel
 import com.nannaapp.bhagavadgita.util.ItemOnClickListener
 import com.nannaapp.bhagavadgita.util.ResultOf
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_chapter_details.*
 
 @AndroidEntryPoint
 class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), ItemOnClickListener {
@@ -50,7 +50,7 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             when (dataState) {
-                is ResultOf.Success<Chapter> -> {
+                is ResultOf.Success<ChapterModel> -> {
                     displayProgressBar(false)
                     displayChapterDetails(dataState.value)
                 }
@@ -75,20 +75,16 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
         binding.shimmerLayout.visibility = if (isDisplayed) View.VISIBLE else View.GONE
     }
 
-    private fun displayChapterDetails(chapter: Chapter) {
+    private fun displayChapterDetails(chapter: ChapterModel) {
         binding.apply {
             chapterName.text = chapter.name
             chapterMeaning.text = "${chapter.translation} - ${chapter.meaning.en}"
             chapterSummaryEn.text = chapter.summary.en
             verseCount.text = "Verse Count : ${chapter.verses_count}"
             chapter_number = chapter.chapter_number
+            chapter_progress_linear.progress = chapter.read_progress
         }
-        var verInfoList: MutableList<VerseInfo> = mutableListOf<VerseInfo>()
-        for (i in 1..chapter.verses_count) {
-            Log.d(TAG, "Chapter Verse Count $i")
-            verInfoList.add(VerseInfo(i))
-        }
-        slokAdapter.verseInfo = verInfoList
+        slokAdapter.verseInfo = chapter.verses_progress_list!!
     }
 
     override fun onItemClick(id: Int) {

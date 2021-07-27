@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nannaapp.bhagavadgita.databinding.ChapterViewBinding
-import com.nannaapp.bhagavadgita.model.network_data.Chapter
+import com.nannaapp.bhagavadgita.model.ChapterModel
 import com.nannaapp.bhagavadgita.util.ItemOnClickListener
 import javax.inject.Inject
 
@@ -14,17 +14,19 @@ class ChapterAdapter @Inject
 constructor(val listener: ItemOnClickListener) :
     RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder>() {
 
-    protected val diffCallBack = object : DiffUtil.ItemCallback<Chapter>() {
-        override fun areItemsTheSame(oldItem: Chapter, newItem: Chapter): Boolean =
+    public final val TAG = ChapterAdapter::class.java.canonicalName
+
+    protected val diffCallBack = object : DiffUtil.ItemCallback<ChapterModel>() {
+        override fun areItemsTheSame(oldItem: ChapterModel, newItem: ChapterModel): Boolean =
             oldItem.chapter_number == newItem.chapter_number
 
-        override fun areContentsTheSame(oldItem: Chapter, newItem: Chapter): Boolean =
+        override fun areContentsTheSame(oldItem: ChapterModel, newItem: ChapterModel): Boolean =
             oldItem.hashCode() == newItem.hashCode()
 
     }
     val differ = AsyncListDiffer(this, diffCallBack)
 
-    var chapters: List<Chapter>
+    var chapters: List<ChapterModel>
         get() = differ.currentList
         set(value) = differ.submitList(value)
 
@@ -57,12 +59,13 @@ constructor(val listener: ItemOnClickListener) :
             }
         }
 
-        fun bind(cur_chapter: Chapter) {
+        fun bind(cur_chapter: ChapterModel) {
             println(cur_chapter)
             binding.apply {
                 chapterId.text = cur_chapter.chapter_number.toString()
                 chapterName.text = cur_chapter.meaning.en
                 chapterMeaning.text = "${cur_chapter.translation} - ${cur_chapter.name}"
+                readProgress.progress = cur_chapter.read_progress
             }
         }
     }

@@ -11,7 +11,7 @@ interface BhagavadgitaApi {
 
     companion object {
         const val BASE_URL = "https://bhagavadgitaapi.in/"
-        const val CLIENT_ACCESS_KEY = "xxxxxxx"
+        const val CLIENT_ACCESS_KEY = "1e2939c0d12d42a8d"
     }
 
     @Headers(

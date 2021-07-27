@@ -12,7 +12,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.bhagavatgita"
+        applicationId "com.nannaapp.bhagavadgita"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
@@ -62,6 +62,8 @@ dependencies {
     //room
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"

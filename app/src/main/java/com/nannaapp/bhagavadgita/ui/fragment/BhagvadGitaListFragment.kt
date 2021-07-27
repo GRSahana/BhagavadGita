@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.nannaapp.bhagavadgita.R
 import com.nannaapp.bhagavadgita.adapter.ChapterAdapter
 import com.nannaapp.bhagavadgita.databinding.FragmentChapterListBinding
+import com.nannaapp.bhagavadgita.model.ChapterModel
 import com.nannaapp.bhagavadgita.model.network_data.Chapter
 import com.nannaapp.bhagavadgita.ui.viewmodel.MainViewModel
 import com.nannaapp.bhagavadgita.util.ItemOnClickListener
@@ -41,7 +42,7 @@ class BhagvadGitaListFragment : Fragment(R.layout.fragment_chapter_list), ItemOn
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             when (dataState) {
-                is ResultOf.Success<List<Chapter>> -> {
+                is ResultOf.Success<List<ChapterModel>> -> {
                     displayProgressBar(false)
                     displayChapterList(dataState.value)
                 }
@@ -66,7 +67,7 @@ class BhagvadGitaListFragment : Fragment(R.layout.fragment_chapter_list), ItemOn
         binding.shimmerLayout.visibility = if (isDisplayed) View.VISIBLE else View.GONE
     }
 
-    private fun displayChapterList(chapters: List<Chapter>) {
+    private fun displayChapterList(chapters: List<ChapterModel>) {
         chapterAdapter.chapters = chapters
     }
 

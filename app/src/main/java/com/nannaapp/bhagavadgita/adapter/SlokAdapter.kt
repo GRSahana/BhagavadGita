@@ -14,6 +14,8 @@ class SlokAdapter @Inject
 constructor(val listener: ItemOnClickListener) :
     RecyclerView.Adapter<SlokAdapter.SlokViewHolder>() {
 
+    public final val TAG = SlokAdapter::class.java.canonicalName
+
     protected val diffCallBack = object : DiffUtil.ItemCallback<VerseInfo>() {
         override fun areItemsTheSame(oldItem: VerseInfo, newItem: VerseInfo): Boolean =
             oldItem.verse_number == newItem.verse_number

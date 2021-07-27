@@ -2,8 +2,9 @@ package com.nannaapp.bhagavadgita.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.nannaapp.bhagavadgita.model.ChapterModel
 import com.nannaapp.bhagavadgita.model.network_data.Chapter
-import com.nannaapp.bhagavadgita.repository.MainRepository
+import com.nannaapp.bhagavadgita.repository.ChapterDetailsRepository
 import com.nannaapp.bhagavadgita.util.ResultOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -14,12 +15,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ChapterDetailsViewModel @Inject
 constructor(
-    private val mainRepository: MainRepository,
+    private val mainRepository: ChapterDetailsRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), LifecycleObserver {
 
-    private val _dataState: MutableLiveData<ResultOf<Chapter>> = MutableLiveData()
-    val dataState: LiveData<ResultOf<Chapter>>
+    private val _dataState: MutableLiveData<ResultOf<ChapterModel>> = MutableLiveData()
+    val dataState: LiveData<ResultOf<ChapterModel>>
         get() = _dataState
 
     fun getChapterDetails(chapterNumber: Int) {
