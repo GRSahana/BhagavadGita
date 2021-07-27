@@ -38,4 +38,8 @@
             android:name="verse_number"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteVerseFragment"
+        android:name="com.nannaapp.bhagavadgita.ui.fragment.FavoriteVerseFragment"
+        android:label="FavoriteVerseFragment" />
 </navigation>
