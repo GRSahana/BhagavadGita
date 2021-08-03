@@ -3,6 +3,7 @@ package com.nannaapp.bhagavadgita.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.*
 import com.nannaapp.bhagavadgita.model.ChapterModel
+import com.nannaapp.bhagavadgita.model.cache_data.VerseInfo
 import com.nannaapp.bhagavadgita.model.network_data.Chapter
 import com.nannaapp.bhagavadgita.repository.ChapterDetailsRepository
 import com.nannaapp.bhagavadgita.util.ResultOf
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChapterDetailsViewModel @Inject
 constructor(
-    private val mainRepository: ChapterDetailsRepository,
+    private val chapterDetailsRepository: ChapterDetailsRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), LifecycleObserver {
 
@@ -23,13 +24,43 @@ constructor(
     val dataState: LiveData<ResultOf<ChapterModel>>
         get() = _dataState
 
+    private val _favState: MutableLiveData<ResultOf<Int>> = MutableLiveData()
+    val favState: LiveData<ResultOf<Int>>
+        get() = _favState
+
+    private val _verseInfoList: MutableLiveData<ResultOf<List<VerseInfo>>> = MutableLiveData()
+    val verseInfoList: LiveData<ResultOf<List<VerseInfo>>>
+        get() = _verseInfoList
+
     fun getChapterDetails(chapterNumber: Int) {
         viewModelScope.launch {
 
-            mainRepository.getChapterDetails(chapterNumber)
+            chapterDetailsRepository.getChapterDetails(chapterNumber)
                 .onEach { dataState ->
                     _dataState.value = dataState
                     Log.d("Data", ": $dataState")
+                }
+                .launchIn(viewModelScope)
+
+        }
+    }
+
+    fun updateFavoriteStatus(id: Int) {
+        viewModelScope.launch {
+            chapterDetailsRepository.updateFavoriteStatus(id)
+                .onEach { favState ->
+                    _favState.value = favState
+                    Log.d("Data", ": $favState")
+                }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    fun getVerseDetails(chapterNumber: Int, verseCount : Int) {
+        viewModelScope.launch {
+            chapterDetailsRepository.getVerseDetails(chapterNumber, verseCount)
+                .onEach { verseInfoList ->
+                    _verseInfoList.value = verseInfoList
                 }
                 .launchIn(viewModelScope)
 

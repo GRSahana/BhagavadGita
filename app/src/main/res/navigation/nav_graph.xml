@@ -22,6 +22,9 @@
         <argument
             android:name="chapter_number"
             app:argType="integer" />
+        <argument
+            android:name="verse_count"
+            app:argType="integer" />
         <action
             android:id="@+id/action_chapterDetailsFragment_to_verseDetailsFragment"
             app:destination="@id/verseDetailsFragment" />

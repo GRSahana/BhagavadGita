@@ -45,8 +45,7 @@ constructor(
                     result[i].translation,
                     result[i].transliteration,
                     result[i].verses_count,
-                    chapterProgressList[i].currentReadProgress,
-                    null
+                    chapterProgressList[i].currentReadProgress
                 )
                 chapterModelList.add(chapterModel)
             }
@@ -57,16 +56,6 @@ constructor(
         }
     }
 
-    suspend fun getChapterDetails(id: Int): Flow<ResultOf<Chapter>> = flow {
-        emit(ResultOf.Loading)
-        try {
-            val result = bhagavadgitaApi.getChapterDetails(id)
-            emit(ResultOf.Success(result))
-        } catch (e: Exception) {
-            emit(ResultOf.Error.Error1(e))
-
-        }
-    }
 
     suspend fun getVerseDetails(chapter_id: Int, verse_id: Int): Flow<ResultOf<Slok>> = flow {
         emit(ResultOf.Loading)

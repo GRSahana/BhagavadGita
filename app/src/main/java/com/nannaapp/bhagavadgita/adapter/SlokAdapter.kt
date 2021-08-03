@@ -1,10 +1,12 @@
 package com.nannaapp.bhagavadgita.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.nannaapp.bhagavadgita.R
 import com.nannaapp.bhagavadgita.databinding.VerseViewBinding
 import com.nannaapp.bhagavadgita.model.cache_data.VerseInfo
 import com.nannaapp.bhagavadgita.util.ItemOnClickListener
@@ -18,7 +20,7 @@ constructor(val listener: ItemOnClickListener) :
 
     protected val diffCallBack = object : DiffUtil.ItemCallback<VerseInfo>() {
         override fun areItemsTheSame(oldItem: VerseInfo, newItem: VerseInfo): Boolean =
-            oldItem.verse_number == newItem.verse_number
+            oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: VerseInfo, newItem: VerseInfo): Boolean =
             oldItem.hashCode() == newItem.hashCode()
@@ -52,17 +54,35 @@ constructor(val listener: ItemOnClickListener) :
                     listener.onItemClick(item.verse_number)
                 }
             }
+
+            binding.favIndicator.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    Log.d(TAG, "Clicked");
+                    val item = verseInfo[position]
+                    listener.onFavClick(item.id, item.favorite)
+                }
+            }
         }
 
         fun bind(cur_verse: VerseInfo) {
-            println("Count " + cur_verse)
+            println("Count $cur_verse")
             binding.apply {
-                verseId.text = "Verse ${cur_verse.verse_number.toString()}"
+                verseId.text = "Verse ${cur_verse.verse_number}"
+                if(cur_verse.favorite){
+                    favIndicator.setImageResource(R.drawable.ic_favorite)
+                }else{
+                    favIndicator.setColorFilter(R.drawable.ic_not_favorite)
+                }
             }
         }
     }
 
     override fun getItemCount(): Int {
         return verseInfo.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 }

@@ -1,6 +1,7 @@
 package com.nannaapp.bhagavadgita.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,7 +14,9 @@ import com.nannaapp.bhagavadgita.R
 import com.nannaapp.bhagavadgita.adapter.SlokAdapter
 import com.nannaapp.bhagavadgita.databinding.FragmentChapterDetailsBinding
 import com.nannaapp.bhagavadgita.model.ChapterModel
+import com.nannaapp.bhagavadgita.model.cache_data.VerseInfo
 import com.nannaapp.bhagavadgita.model.network_data.Chapter
+import com.nannaapp.bhagavadgita.repository.MainRepository
 import com.nannaapp.bhagavadgita.ui.viewmodel.ChapterDetailsViewModel
 import com.nannaapp.bhagavadgita.util.ItemOnClickListener
 import com.nannaapp.bhagavadgita.util.ResultOf
@@ -23,14 +26,15 @@ import kotlinx.android.synthetic.main.fragment_chapter_details.*
 @AndroidEntryPoint
 class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), ItemOnClickListener {
 
-    private val TAG = "AppDebug"
+    private val TAG = ChapterDetailsFragment::class.java.canonicalName
     private val viewModel: ChapterDetailsViewModel by viewModels()
     private var _binding: FragmentChapterDetailsBinding? = null
     private val binding
         get() = _binding!!
     private var slokAdapter = SlokAdapter(this)
     val spanCount: Int = 3
-    var chapter_number: Int = 0
+    var chapterNumber: Int = 0
+    var snackbarStatus = false
 
     private val args by navArgs<ChapterDetailsFragmentArgs>()
 
@@ -44,6 +48,7 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
             adapter = slokAdapter
         }
         viewModel.getChapterDetails(args.chapterNumber)
+        viewModel.getVerseDetails(args.chapterNumber, args.verseCount)
         subscribeObservers()
     }
 
@@ -63,6 +68,51 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
                 }
             }
         })
+        viewModel.verseInfoList.observe(viewLifecycleOwner, Observer { verseInfoList ->
+            when (verseInfoList) {
+                is ResultOf.Success<List<VerseInfo>> -> {
+                    displayProgressBar(false)
+                    Log.d(TAG, "slokAdapter refresh")
+                    slokAdapter.verseInfo = verseInfoList.value
+                }
+                is ResultOf.Error -> {
+                    displayProgressBar(false)
+                    displayError(verseInfoList.e.message)
+                }
+                is ResultOf.Loading -> {
+                    displayProgressBar(true)
+                }
+            }
+        })
+        viewModel.favState.observe(viewLifecycleOwner,{verseId ->
+            when (verseId) {
+                is ResultOf.Success<Int> -> {
+                    Log.d(TAG, "slokAdapter refresh")
+                    viewModel.getVerseDetails(args.chapterNumber, args.verseCount)
+                    if(snackbarStatus){
+                        snackbarStatus = false
+                        val mySnackbar = Snackbar.make(
+                            binding.constraintLayout,
+                            "Verse ${verseId.value} is added to favorites", Snackbar.LENGTH_LONG
+                        )
+                        mySnackbar.setAction(R.string.undo_string) {
+                            viewModel.updateFavoriteStatus(verseId.value)
+                            viewModel.getVerseDetails(args.chapterNumber, args.verseCount)
+                        }
+                        mySnackbar.show()
+                    }
+                }
+                is ResultOf.Error -> {
+                    val mySnackbar = Snackbar.make(
+                        binding.constraintLayout,
+                        "Error setting favorite", Snackbar.LENGTH_LONG
+                    )
+                    mySnackbar.show()
+                }
+                else -> Unit
+            }
+
+        })
     }
 
     private fun displayError(message: String?) {
@@ -81,15 +131,22 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
             chapterMeaning.text = "${chapter.translation} - ${chapter.meaning.en}"
             chapterSummaryEn.text = chapter.summary.en
             verseCount.text = "Verse Count : ${chapter.verses_count}"
-            chapter_number = chapter.chapter_number
+            chapterNumber = chapter.chapter_number
             chapter_progress_linear.progress = chapter.read_progress
         }
-        slokAdapter.verseInfo = chapter.verses_progress_list!!
+        //slokAdapter.verseInfo = chapter.verses_progress_list!!
     }
 
     override fun onItemClick(id: Int) {
         val action = ChapterDetailsFragmentDirections
-            .actionChapterDetailsFragmentToVerseDetailsFragment(chapter_number, id)
+            .actionChapterDetailsFragmentToVerseDetailsFragment(chapterNumber, id)
         findNavController().navigate(action)
     }
+
+    override fun onFavClick(id: Int, favStatus:Boolean) {
+        viewModel.updateFavoriteStatus(id)
+        snackbarStatus = true
+    }
+
+    override fun onItemClicked(chapterNumber: Int, versesCount: Int) = Unit
 }

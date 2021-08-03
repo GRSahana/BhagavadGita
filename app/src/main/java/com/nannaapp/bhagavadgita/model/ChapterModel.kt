@@ -12,6 +12,5 @@ data class ChapterModel(
     val translation: String,
     val transliteration: String,
     val verses_count: Int,
-    val read_progress: Int,
-    val verses_progress_list: List<VerseInfo> ?= null
+    val read_progress: Int
 )

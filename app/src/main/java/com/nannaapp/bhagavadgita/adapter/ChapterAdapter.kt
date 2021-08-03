@@ -54,7 +54,7 @@ constructor(val listener: ItemOnClickListener) :
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = chapters[position]
-                    listener.onItemClick(item.chapter_number)
+                    listener.onItemClicked(item.chapter_number, item.verses_count)
                 }
             }
         }

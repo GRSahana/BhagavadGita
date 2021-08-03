@@ -26,18 +26,7 @@ constructor(
         try {
             val chapter = bhagavadgitaApi.getChapterDetails(id)
             val chapterProgress = chapterDao.getChapterProgressById(chapter.chapter_number)
-            var verseDetailsById = verseDao.getVerseInfoByChapterNumber(chapter.chapter_number)
-            if (verseDetailsById.isEmpty()) {
-                for (i in 1..chapter.verses_count) {
-                    verseDao.insertVerseInfo(
-                        VerseInfo(
-                            verse_number = i,
-                            chapter_number = chapter.chapter_number
-                        )
-                    )
-                }
-                verseDetailsById = verseDao.getVerseInfoByChapterNumber(chapter.chapter_number)
-            }
+
             val chapterModel = ChapterModel(
                 chapter.chapter_number,
                 chapter.meaning,
@@ -46,14 +35,46 @@ constructor(
                 chapter.translation,
                 chapter.transliteration,
                 chapter.verses_count,
-                chapterProgress.currentReadProgress,
-                verseDetailsById
+                chapterProgress.currentReadProgress
             )
             emit(ResultOf.Success(chapterModel))
         } catch (e: Exception) {
             Log.d(TAG, "getChapterDetailsList: ${e}")
             emit(ResultOf.Error.Error1(e))
 
+        }
+    }
+
+    suspend fun getVerseDetails(id: Int, verseCount : Int): Flow<ResultOf<List<VerseInfo>>> = flow {
+        emit(ResultOf.Loading)
+        try {
+            var verseDetailsById = verseDao.getVerseInfoByChapterNumber(id)
+            if (verseDetailsById.isEmpty()) {
+                for (i in 1..verseCount) {
+                    verseDao.insertVerseInfo(
+                        VerseInfo(
+                            verse_number = i,
+                            chapter_number = id
+                        )
+                    )
+                }
+                verseDetailsById = verseDao.getVerseInfoByChapterNumber(id)
+            }
+                emit(ResultOf.Success(verseDetailsById))
+        } catch (e: Exception) {
+            Log.d(TAG, "getChapterDetailsList: ${e}")
+            emit(ResultOf.Error.Error1(e))
+        }
+    }
+
+    suspend fun updateFavoriteStatus(id: Int): Flow<ResultOf<Int>> = flow {
+        emit(ResultOf.Loading)
+        try {
+            val status = verseDao.updateVerseFavStatus(id)
+            emit(ResultOf.Success(id))
+        } catch (e: Exception) {
+            Log.d(TAG, "getChapterDetailsList: ${e}")
+            emit(ResultOf.Error.Error1(e))
         }
     }
 

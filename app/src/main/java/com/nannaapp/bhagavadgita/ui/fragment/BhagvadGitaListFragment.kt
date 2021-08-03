@@ -71,9 +71,13 @@ class BhagvadGitaListFragment : Fragment(R.layout.fragment_chapter_list), ItemOn
         chapterAdapter.chapters = chapters
     }
 
-    override fun onItemClick(id: Int) {
+    override fun onItemClick(id: Int) = Unit
+
+    override fun onFavClick(id: Int, favStatus: Boolean)  = Unit
+
+    override fun onItemClicked(chapterNumber: Int, versesCount: Int) {
         val action = BhagvadGitaListFragmentDirections
-            .actionBhagvadGitaListFragmentToChapterDetailsFragment(id)
+            .actionBhagvadGitaListFragmentToChapterDetailsFragment(chapterNumber,versesCount)
         findNavController().navigate(action)
     }
 
