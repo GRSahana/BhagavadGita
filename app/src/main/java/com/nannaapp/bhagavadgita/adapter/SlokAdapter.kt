@@ -58,7 +58,6 @@ constructor(val listener: ItemOnClickListener) :
             binding.favIndicator.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    Log.d(TAG, "Clicked");
                     val item = verseInfo[position]
                     listener.onFavClick(item.id, item.favorite)
                 }

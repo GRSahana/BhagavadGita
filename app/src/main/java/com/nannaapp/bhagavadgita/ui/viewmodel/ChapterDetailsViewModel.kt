@@ -38,7 +38,6 @@ constructor(
             chapterDetailsRepository.getChapterDetails(chapterNumber)
                 .onEach { dataState ->
                     _dataState.value = dataState
-                    Log.d("Data", ": $dataState")
                 }
                 .launchIn(viewModelScope)
 
@@ -50,7 +49,6 @@ constructor(
             chapterDetailsRepository.updateFavoriteStatus(id)
                 .onEach { favState ->
                     _favState.value = favState
-                    Log.d("Data", ": $favState")
                 }
                 .launchIn(viewModelScope)
         }

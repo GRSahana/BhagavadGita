@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nannaapp.bhagavadgita.databinding.ChapterViewBinding
 import com.nannaapp.bhagavadgita.model.ChapterModel
 import com.nannaapp.bhagavadgita.util.ItemOnClickListener
+import kotlinx.android.synthetic.main.fragment_chapter_details.*
 import javax.inject.Inject
 
 class ChapterAdapter @Inject
@@ -65,7 +66,7 @@ constructor(val listener: ItemOnClickListener) :
                 chapterId.text = cur_chapter.chapter_number.toString()
                 chapterName.text = cur_chapter.meaning.en
                 chapterMeaning.text = "${cur_chapter.translation} - ${cur_chapter.name}"
-                readProgress.progress = cur_chapter.read_progress
+                readProgress.setProgress((cur_chapter.read_progress / cur_chapter.verses_count) * 100)
             }
         }
     }

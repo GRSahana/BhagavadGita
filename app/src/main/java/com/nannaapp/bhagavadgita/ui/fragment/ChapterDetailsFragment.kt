@@ -22,6 +22,7 @@ import com.nannaapp.bhagavadgita.util.ItemOnClickListener
 import com.nannaapp.bhagavadgita.util.ResultOf
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_chapter_details.*
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), ItemOnClickListener {
@@ -132,9 +133,10 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
             chapterSummaryEn.text = chapter.summary.en
             verseCount.text = "Verse Count : ${chapter.verses_count}"
             chapterNumber = chapter.chapter_number
-            chapter_progress_linear.progress = chapter.read_progress
+            val percent = (chapter.read_progress.toDouble() / chapter.verses_count);
+            chapterProgressLinear.setProgress((percent * 100).roundToInt())
+            Log.d(TAG, "displayChapterDetails: ${chapter.read_progress.toDouble()} ${chapter.verses_count} ${(percent * 100).roundToInt()}")
         }
-        //slokAdapter.verseInfo = chapter.verses_progress_list!!
     }
 
     override fun onItemClick(id: Int) {

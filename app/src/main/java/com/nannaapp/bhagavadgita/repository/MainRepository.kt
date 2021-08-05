@@ -25,15 +25,12 @@ constructor(
         try {
             val result = bhagavadgitaApi.getChaptersList()
             var chapterProgressList = chapterDao.getChapterProgress()
-            Log.d(TAG, "getChapterList: ${result.toString()}")
-            Log.d(TAG, "getChapterList: ${chapterProgressList.toString()}")
             if(chapterProgressList.isEmpty()) {
                 for (c in result) {
                     val chapterProgress = ChapterProgress(c.chapter_number, 0)
                     chapterDao.insertChapterProgress(chapterProgress)
                 }
                 chapterProgressList = chapterDao.getChapterProgress()
-                Log.d(TAG, "getChapterList: ${chapterProgressList.toString()}")
             }
             val chapterModelList: MutableList<ChapterModel> = mutableListOf<ChapterModel>()
             for(i in 0..17){
@@ -57,14 +54,4 @@ constructor(
     }
 
 
-    suspend fun getVerseDetails(chapter_id: Int, verse_id: Int): Flow<ResultOf<Slok>> = flow {
-        emit(ResultOf.Loading)
-        try {
-            val result = bhagavadgitaApi.getSlok(chapter_id, verse_id)
-            emit(ResultOf.Success(result))
-        } catch (e: Exception) {
-            emit(ResultOf.Error.Error1(e))
-
-        }
-    }
 }

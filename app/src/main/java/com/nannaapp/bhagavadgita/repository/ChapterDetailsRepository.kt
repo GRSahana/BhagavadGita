@@ -6,6 +6,7 @@ import com.nannaapp.bhagavadgita.database.ChapterDao
 import com.nannaapp.bhagavadgita.database.VerseDao
 import com.nannaapp.bhagavadgita.model.ChapterModel
 import com.nannaapp.bhagavadgita.model.cache_data.VerseInfo
+import com.nannaapp.bhagavadgita.model.network_data.Slok
 import com.nannaapp.bhagavadgita.network.BhagavadgitaApi
 import com.nannaapp.bhagavadgita.util.ResultOf
 import kotlinx.coroutines.flow.Flow
@@ -62,7 +63,7 @@ constructor(
             }
                 emit(ResultOf.Success(verseDetailsById))
         } catch (e: Exception) {
-            Log.d(TAG, "getChapterDetailsList: ${e}")
+            Log.d(TAG, "getVerseDetails: ${e}")
             emit(ResultOf.Error.Error1(e))
         }
     }
@@ -73,7 +74,7 @@ constructor(
             val status = verseDao.updateVerseFavStatus(id)
             emit(ResultOf.Success(id))
         } catch (e: Exception) {
-            Log.d(TAG, "getChapterDetailsList: ${e}")
+            Log.d(TAG, "updateFavoriteStatus: ${e}")
             emit(ResultOf.Error.Error1(e))
         }
     }

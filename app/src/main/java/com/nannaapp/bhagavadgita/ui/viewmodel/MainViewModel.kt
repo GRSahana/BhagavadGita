@@ -29,7 +29,6 @@ constructor(
             mainRepository.getChapterList()
                 .onEach { dataState ->
                     _dataState.value = dataState
-                    Log.d("Data", ": $dataState")
                 }
                 .launchIn(viewModelScope)
 

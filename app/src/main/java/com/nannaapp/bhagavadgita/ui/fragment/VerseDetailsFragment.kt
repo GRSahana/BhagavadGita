@@ -1,8 +1,8 @@
 package com.nannaapp.bhagavadgita.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver.OnScrollChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,6 +16,7 @@ import com.nannaapp.bhagavadgita.ui.viewmodel.VerseDetailsViewModel
 import com.nannaapp.bhagavadgita.util.ResultOf
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class VerseDetailsFragment : Fragment(R.layout.fragment_verse_details) {
@@ -35,9 +36,17 @@ class VerseDetailsFragment : Fragment(R.layout.fragment_verse_details) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentVerseDetailsBinding.bind(view)
 
-
         viewModel.getVerseDetails(args.chapterNumber, args.verseNumber)
         subscribeObservers()
+        binding.scrollView.getViewTreeObserver()
+            .addOnScrollChangedListener(OnScrollChangedListener {
+                if (binding.scrollView.getChildAt(0).getBottom()
+                    <= binding.scrollView.getHeight() + binding.scrollView.getScrollY()
+                ) {
+                    //scroll view is at bottom
+                    viewModel.updateReadStatus(args.chapterNumber, args.verseNumber)
+                }
+            })
     }
 
     private fun subscribeObservers() {
@@ -74,4 +83,6 @@ class VerseDetailsFragment : Fragment(R.layout.fragment_verse_details) {
             verseMeaning.text = "${slok.raman.et} \n \t\t by ${slok.raman.author}"
         }
     }
+
+
 }

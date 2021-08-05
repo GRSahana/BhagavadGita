@@ -5,6 +5,7 @@ import com.nannaapp.bhagavadgita.database.VerseDao
 import com.nannaapp.bhagavadgita.network.BhagavadgitaApi
 import com.nannaapp.bhagavadgita.repository.ChapterDetailsRepository
 import com.nannaapp.bhagavadgita.repository.MainRepository
+import com.nannaapp.bhagavadgita.repository.VerseDetailsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +32,13 @@ class RepositoryModule {
         verseDao: VerseDao
     ): ChapterDetailsRepository =
         ChapterDetailsRepository(bhagavadgitaApi, chapterDao,verseDao)
+
+    @Provides
+    @Singleton
+    fun provideVerseDetailsRepository(
+        bhagavadgitaApi: BhagavadgitaApi,
+        chapterDao: ChapterDao,
+        verseDao: VerseDao
+    ): VerseDetailsRepository =
+        VerseDetailsRepository(bhagavadgitaApi, chapterDao,verseDao)
 }
