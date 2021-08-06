@@ -135,6 +135,7 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
             chapterNumber = chapter.chapter_number
             val percent = (chapter.read_progress.toDouble() / chapter.verses_count);
             chapterProgressLinear.setProgress((percent * 100).roundToInt())
+            progressText.setText("${(percent * 100).roundToInt()}/100")
             Log.d(TAG, "displayChapterDetails: ${chapter.read_progress.toDouble()} ${chapter.verses_count} ${(percent * 100).roundToInt()}")
         }
     }
