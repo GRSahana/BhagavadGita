@@ -44,5 +44,9 @@
     <fragment
         android:id="@+id/favoriteVerseFragment"
         android:name="com.nannaapp.bhagavadgita.ui.fragment.FavoriteVerseFragment"
-        android:label="FavoriteVerseFragment" />
+        android:label="FavoriteVerseFragment" >
+        <action
+            android:id="@+id/action_favoriteVerseFragment_to_verseDetailsFragment"
+            app:destination="@id/verseDetailsFragment" />
+    </fragment>
 </navigation>

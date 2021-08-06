@@ -2,6 +2,7 @@ package com.nannaapp.bhagavadgita.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -13,7 +14,7 @@ import com.nannaapp.bhagavadgita.util.ItemOnClickListener
 import javax.inject.Inject
 
 class SlokAdapter @Inject
-constructor(val listener: ItemOnClickListener) :
+constructor(val listener: ItemOnClickListener, val from : String) :
     RecyclerView.Adapter<SlokAdapter.SlokViewHolder>() {
 
     public final val TAG = SlokAdapter::class.java.canonicalName
@@ -51,7 +52,7 @@ constructor(val listener: ItemOnClickListener) :
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = verseInfo[position]
-                    listener.onItemClick(item.verse_number)
+                    listener.onVerseItemClick(item.chapter_number, item.verse_number)
                 }
             }
 
@@ -68,10 +69,18 @@ constructor(val listener: ItemOnClickListener) :
             println("Count $cur_verse")
             binding.apply {
                 verseId.text = "Verse ${cur_verse.verse_number}"
-                if(cur_verse.favorite){
-                    favIndicator.setImageResource(R.drawable.ic_favorite)
-                }else{
-                    favIndicator.setColorFilter(R.drawable.ic_not_favorite)
+                if(from == "Favorite"){
+                    chapter.text = "Chapter ${cur_verse.chapter_number}"
+                    chapter.visibility = View.VISIBLE
+                    favIndicator.visibility = View.GONE
+                }else {
+                    chapter.visibility = View.GONE
+                    favIndicator.visibility = View.VISIBLE
+                    if (cur_verse.favorite) {
+                        favIndicator.setImageResource(R.drawable.ic_favorite)
+                    } else {
+                        favIndicator.setImageResource(R.drawable.ic_not_favorite)
+                    }
                 }
             }
         }

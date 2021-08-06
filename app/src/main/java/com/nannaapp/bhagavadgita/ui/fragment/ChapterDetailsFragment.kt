@@ -32,7 +32,7 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
     private var _binding: FragmentChapterDetailsBinding? = null
     private val binding
         get() = _binding!!
-    private var slokAdapter = SlokAdapter(this)
+    private var slokAdapter = SlokAdapter(this, "")
     val spanCount: Int = 3
     var chapterNumber: Int = 0
     var snackbarStatus = false
@@ -140,9 +140,9 @@ class ChapterDetailsFragment : Fragment(R.layout.fragment_chapter_details), Item
         }
     }
 
-    override fun onItemClick(id: Int) {
+    override fun onVerseItemClick(chapterNumber: Int, verseNumber: Int) {
         val action = ChapterDetailsFragmentDirections
-            .actionChapterDetailsFragmentToVerseDetailsFragment(chapterNumber, id)
+            .actionChapterDetailsFragmentToVerseDetailsFragment(chapterNumber, verseNumber)
         findNavController().navigate(action)
     }
 

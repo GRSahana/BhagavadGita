@@ -64,4 +64,15 @@ constructor(
 
         }
     }
+
+    fun getFavVerseDetails() {
+        viewModelScope.launch {
+            chapterDetailsRepository.getFavVerseDetails()
+                .onEach { verseInfoList ->
+                    _verseInfoList.value = verseInfoList
+                }
+                .launchIn(viewModelScope)
+
+        }
+    }
 }

@@ -79,4 +79,15 @@ constructor(
         }
     }
 
+    suspend fun getFavVerseDetails(): Flow<ResultOf<List<VerseInfo>>> = flow {
+        emit(ResultOf.Loading)
+        try {
+            var verseDetailsById = verseDao.getFavVerseDetails()
+            emit(ResultOf.Success(verseDetailsById))
+        } catch (e: Exception) {
+            Log.d(TAG, "getVerseDetails: ${e}")
+            emit(ResultOf.Error.Error1(e))
+        }
+    }
+
 }

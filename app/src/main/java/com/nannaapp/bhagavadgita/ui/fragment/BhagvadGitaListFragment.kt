@@ -71,7 +71,7 @@ class BhagvadGitaListFragment : Fragment(R.layout.fragment_chapter_list), ItemOn
         chapterAdapter.chapters = chapters
     }
 
-    override fun onItemClick(id: Int) = Unit
+    override fun onVerseItemClick(chapterNumber: Int, verseNumber: Int) = Unit
 
     override fun onFavClick(id: Int, favStatus: Boolean)  = Unit
 

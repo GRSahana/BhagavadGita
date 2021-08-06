@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
     android:elevation="5dp"
     app:cardBackgroundColor="@color/primaryColor"
@@ -18,21 +19,33 @@
             android:id="@+id/fav_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_favorite"
+            tools:src="@drawable/ic_favorite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/chapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            tools:text="Chapter 1"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="@dimen/small_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fav_indicator" />
 
         <TextView
             android:id="@+id/verse_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:text="verse 1"
+            tools:text="verse 1"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/small_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fav_indicator" />
+            app:layout_constraintTop_toBottomOf="@+id/chapter" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
