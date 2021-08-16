@@ -115,18 +115,34 @@
                 app:layout_constraintTop_toBottomOf="@+id/chapter_progress_linear"
                 tools:text="0/100" />
 
-
-            <TextView
-                android:id="@+id/chapter_meaning"
+            <LinearLayout
+                android:id="@+id/text_to_speech_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progress_text"
+                android:layout_marginHorizontal="@dimen/layout_element_margin"
+                android:layout_margin="@dimen/layout_element_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/layout_element_margin"
-                android:fontFamily="@font/poppins_semibold"
-                android:textAlignment="center"
-                android:textSize="@dimen/sub_heading"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progress_text"
-                tools:text="Arjun Viṣhād Yog - Arjuna's Dilemma" />
+                android:orientation="horizontal">
+
+
+                <com.nannaapp.bhagavadgita.View.PlayPauseView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/tts_button"
+                    android:src="@drawable/play_to_pause"
+                    android:contentDescription="@string/text_to_speech" />
+
+                <com.nannaapp.bhagavadgita.View.VisualView
+                    android:id="@+id/visualView"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/chapter_summary_en"
@@ -136,7 +152,7 @@
                 android:fontFamily="@font/rubik"
                 android:textSize="@dimen/text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chapter_meaning"
+                app:layout_constraintTop_toBottomOf="@+id/text_to_speech_layout"
                 tools:text="@string/summary_en" />
 
             <androidx.recyclerview.widget.RecyclerView
